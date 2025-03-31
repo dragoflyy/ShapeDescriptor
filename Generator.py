@@ -46,6 +46,7 @@ def GeneratePosition(im_size, shape_size) :
     
 def GenerateCircle():
     im_size = GenerateSize()
+    im_size = np.array([im_size[0], im_size[0]])
     shape_size = int((0.05 + 0.35*random.random())*min(im_size))
     shape_pos = GeneratePosition(im_size, shape_size)
 
@@ -106,7 +107,7 @@ def CreateDatasetFolders() :
     incomplete_circle_percent = 0.5
     noisy_circle_percent = 0.5
 
-    lines_images = 500
+    lines_number = 500
 
     for i in range(square_number) :
         incomplete, noise = False, False
@@ -127,7 +128,7 @@ def CreateDatasetFolders() :
     noises = GenerateShape("Noise", noise_number)
     for item in noises :
         item.Write()
-    lines = GenerateShape("Lines", noise_number)
+    lines = GenerateShape("Lines", lines_number)
     for item in lines :
         item.Write()
 
@@ -156,5 +157,8 @@ def GenerateShape(shape, count, occult_shape=False, noisy=False) :
         dataset.append(data)
     return np.array(dataset)
 
-CreateDatasetFolders()
+
+if __name__ == "__main__":
+    print("Generating a dataset")
+    CreateDatasetFolders()
 
