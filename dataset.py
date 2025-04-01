@@ -10,7 +10,10 @@ class Dataset :
 
     def __str__(self) : 
         return "dataset ["+str(len(self.data))+" items]"
-
+        
+    def __getitem__(self, key):
+        return self.data[key]
+        
     def Write(self) :
         for data in self.data :
             data.Write()
