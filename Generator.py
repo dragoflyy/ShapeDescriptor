@@ -38,7 +38,7 @@ def GenerateSquare() :
     
     cv2.drawContours(image, [box], 0, (255, 255, 255), 1 + int(2*random.random()))
 
-    return Dataset(image, "Rectangle", center + final_offset, shape_size, angle)
+    return Data(image, "Rectangle", center + final_offset, shape_size, angle)
 
 def GeneratePosition(im_size, shape_size) :
     pos_range = im_size - 2*shape_size
@@ -52,14 +52,14 @@ def GenerateCircle():
 
     image = np.zeros((im_size[1], im_size[0], 3), dtype=np.uint8)
     cv2.circle(image, shape_pos, shape_size, (255, 255, 255), 1 + int(2*random.random()))
-    return Dataset(image, "Circle", shape_pos, shape_size)
+    return Data(image, "Circle", shape_pos, shape_size)
 
 def GenerateNoisyImage(size = None) :
     if (size != None ):
         im_size = size
     else :
         im_size = GenerateSize()
-    return Dataset(255*np.random.random(im_size), "Noise")
+    return Data(255*np.random.random(im_size), "Noise")
 
 def Noisit(image, ratio=4) :
     noise = GenerateNoisyImage(image.shape)._image
@@ -74,7 +74,7 @@ def GenerateLinesImage() :
         sp = np.array([random.random(), random.random()]) * im_size
         ep = np.array([random.random(), random.random()]) * im_size
         cv2.line(image,np.int64(sp),np.int64(ep),(255,255,255),1 + int(2*random.random()))
-    return Dataset(image, "Lines", None, None)
+    return Data(image, "Lines", None, None)
 
 def SpawnBlackSquare(image) :
     shape_size = np.int64(np.array(image.shape[0:2])/( 3 + int(random.random()*4)))
@@ -147,7 +147,7 @@ def GenerateShape(shape, count, occult_shape=False, noisy=False) :
         case _:
             print("Wrong Shape Name")
             return None
-    dataset = []
+    dataset = Dataset()
     for i in range(count) :
         data = generator()
         if occult_shape :
@@ -155,7 +155,7 @@ def GenerateShape(shape, count, occult_shape=False, noisy=False) :
         if noisy :
             data._image = Noisit(data._image)
         dataset.append(data)
-    return np.array(dataset)
+    return dataset
 
 
 if __name__ == "__main__":
