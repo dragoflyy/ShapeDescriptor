@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 import shutil
 import os
-from dataset import Dataset
+from dataset import Data, Dataset
 
 dest_folder="data"
 

@@ -25,7 +25,7 @@ class Dataset :
     def append(self,other) :
         if isinstance(other, Data) : 
             self.data.append(other)
-        elif isinstance(other, Dataset)
+        elif isinstance(other, Dataset) :
             for item in other.data : 
                 self.data.append(item)
 
@@ -35,7 +35,7 @@ class Data :
     static_normalized_size = (300, 300)
 
     def __init__(self, image, i_type, center=None, size=None, rotation=None) :
-        self._number = Dataset.static_dataset_number
+        self._number = Data.static_dataset_number
         Data.static_dataset_number += 1
         self._image = image               # np image
         self._type = i_type               # shape classification [str]
