@@ -34,9 +34,9 @@ def GenerateSquare() :
     box = box + final_offset
     
     im_size = [oversize + max(y_array) + abs(min(y_array)), oversize +  max(x_array) + abs(min(x_array))]
-    image = np.zeros((im_size[1], im_size[0], 3), dtype=np.uint8)
+    image = np.zeros((im_size[1], im_size[0]), dtype=np.uint8)
     
-    cv2.drawContours(image, [box], 0, (255, 255, 255), 1 + int(2*random.random()))
+    cv2.drawContours(image, [box], 0, 255, 1 + int(2*random.random()))
 
     return Data(image, "Rectangle", center + final_offset, shape_size, angle)
 
@@ -50,8 +50,8 @@ def GenerateCircle():
     shape_size = int((0.05 + 0.35*random.random())*min(im_size))
     shape_pos = GeneratePosition(im_size, shape_size)
 
-    image = np.zeros((im_size[1], im_size[0], 3), dtype=np.uint8)
-    cv2.circle(image, shape_pos, shape_size, (255, 255, 255), 1 + int(2*random.random()))
+    image = np.zeros((im_size[1], im_size[0]), dtype=np.uint8)
+    cv2.circle(image, shape_pos, shape_size, 255, 1 + int(2*random.random()))
     return Data(image, "Circle", shape_pos, shape_size)
 
 def GenerateNoisyImage(size = None) :
@@ -67,13 +67,13 @@ def Noisit(image, ratio=4) :
 
 def GenerateLinesImage() :
     im_size = GenerateSize()
-    image = np.zeros((im_size[1], im_size[0], 3), dtype=np.uint8)
+    image = np.zeros((im_size[1], im_size[0]), dtype=np.uint8)
 
     lines_nb = 1 + int(random.random()*20)
     for i in range(lines_nb) :
         sp = np.array([random.random(), random.random()]) * im_size
         ep = np.array([random.random(), random.random()]) * im_size
-        cv2.line(image,np.int64(sp),np.int64(ep),(255,255,255),1 + int(2*random.random()))
+        cv2.line(image,np.int64(sp),np.int64(ep),255,1 + int(2*random.random()))
     return Data(image, "Lines", None, None)
 
 def SpawnBlackSquare(image) :
@@ -153,7 +153,8 @@ def GenerateShape(shape, count, occult_shape=False, noisy=False) :
         if occult_shape :
             data._image = SpawnBlackSquare(data._image)
         if noisy :
-            data._image = Noisit(data._image)
+            noise = GenerateNoisyImage()
+            data += noise - 128
         dataset.append(data)
     return dataset
 
