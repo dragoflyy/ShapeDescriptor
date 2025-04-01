@@ -3,28 +3,50 @@ import numpy as np
 import cv2
 import os
 
-class Dataset :
+# and dataset should have a map of all image by type
+class Dataset : 
+    def __init__(self) :
+        self.data = []
+
+    def __str__(self) : 
+        return "dataset ["+str(len(self.data))+" items]"
+
+    def Write(self) :
+        for data in self.data :
+            data.Write()
+    
+    def Reshape (self) :
+        for data in self.data : 
+            data.Reshape()
+
+    def append(self,other) :
+        if isinstance(other, Data) : 
+            self.data.append(other)
+        elif isinstance(other, Dataset)
+            for item in other.data : 
+                self.data.append(item)
+
+class Data :
     # static parameters
     static_dataset_number = 1
     static_normalized_size = (300, 300)
 
     def __init__(self, image, i_type, center=None, size=None, rotation=None) :
         self._number = Dataset.static_dataset_number
-        Dataset.static_dataset_number += 1
+        Data.static_dataset_number += 1
         self._image = image               # np image
         self._type = i_type               # shape classification [str]
         self._center = center             # np point
         self._size = size                 # shape size [various depending to shape]
         self._rotation = rotation          # shape rotation
         self.dest_folder="data"
-        self.Reshape()
 
     def __str__(self):
         return str(self._type) + " | " + str(self._center) + " | " + str(self._size)
 
     def __add__(self, other):
-        if isinstance(other, Dataset) and other._type == "Noise" :
-            return Dataset(self._image + other._image, self._type, self._center, self._size)
+        if isinstance(other, Data) and other._type == "Noise" :
+            return Data(self._image + other._image, self._type, self._center, self._size)
         raise TypeError("Only noise can be added to Image type")
 
     def Write(self) :
@@ -35,9 +57,9 @@ class Dataset :
         cv2.imwrite(destination+"\\"+name, self._image)
 
     def Reshape(self) :
-        f_agrandissement = Dataset.static_normalized_size/np.array(self._image.shape[0:2])
+        f_agrandissement = Data.static_normalized_size/np.array(self._image.shape[0:2])
 
-        self._image = cv2.resize(self._image, Dataset.static_normalized_size)
+        self._image = cv2.resize(self._image, Data.static_normalized_size)
         if not isinstance(self._center, type(None)) :
             self._center = self._center * f_agrandissement
         if not isinstance(self._size, type(None)) :
@@ -67,7 +89,7 @@ def ParseData(data) :
 def LoadDataSet() :
     print("load dataset")
     dest_folder="data"
-    dataset = []
+    dataset = Dataset()
 
     for im_type in os.listdir(dest_folder) :
         for image in os.listdir(dest_folder + "\\" + im_type) :
@@ -80,9 +102,9 @@ def LoadDataSet() :
             
             image = cv2.imread(dest_folder+"\\"+im_type+"\\"+image)
 
-            data = Dataset(image, im_type, center, size, rotation)
+            data = Data(image, im_type, center, size, rotation)
             dataset.append(data)
-    return np.array(dataset)
+    return dataset
 
 
 if __name__ == "__main__":
