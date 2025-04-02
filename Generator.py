@@ -59,7 +59,7 @@ def GenerateNoisyImage(size = None) :
         im_size = size
     else :
         im_size = GenerateSize()
-    return Data(255*np.random.random(im_size), "Noise")
+    return Data(np.int16(255*np.random.random(im_size)), "Noise")
 
 def Noisit(image, ratio=4) :
     noise = GenerateNoisyImage(image.shape)._image
