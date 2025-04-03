@@ -5,6 +5,7 @@ from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
 import numpy as np
+from datasets import dataset
 
 # seed for reproducing same results
 seed = 9
