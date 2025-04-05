@@ -68,25 +68,25 @@ class Dataset :
         result = []
         for item in self.data :
             result.append(item._type)
-        return result
+        return np.array(result)
 
     def Center(self) :
         result = []
         for item in self.data :
             result.append(item._center)
-        return result
+        return np.array(result)
 
     def Size(self) :
         result = []
         for item in self.data :
             result.append(item._size)
-        return result
+        return np.array(result)
 
     def Rotation(self) :
         result = []
         for item in self.data :
             result.append(item._rotation)
-        return result
+        return np.array(result)
         
     def Write(self) :
         for data in self.data :

@@ -92,43 +92,32 @@ def CleanGenerated() :
         print("can't delete " + dest_folder)
     os.makedirs(dest_folder, exist_ok=True)
 
-def CreateDatasetFolders() :
+def CreateDatasetFolders(squares=0, incomplete_s=0, noisy_s=0, circle=0, incomplete_c=0, noisy_c=0, noise=0, lines=0) :
     # -- Cleaning of older data
     CleanGenerated()
 
     # -- Generation of datas 
-    square_number = 1000
-    incomplete_squares_percent = 0.5
-    noisy_squares_percent = 0.5
 
-    noise_number = 100
-
-    circle_number = 500
-    incomplete_circle_percent = 0.5
-    noisy_circle_percent = 0.5
-
-    lines_number = 500
-
-    for i in range(square_number) :
-        incomplete, noise = False, False
-        if (random.random() < incomplete_squares_percent) :
+    for i in range(squares) :
+        incomplete, noised = False, False
+        if (random.random() < incomplete_s) :
             incomplete = True
-        if (random.random() < noisy_squares_percent) :
-            noise = True
-        GenerateShape("Rectangle", 1, occult_shape=incomplete, noisy=noise)[0].Write()
+        if (random.random() < noisy_s) :
+            noised = True
+        GenerateShape("Rectangle", 1, occult_shape=incomplete, noisy=noised)[0].Write()
 
-    for i in range(circle_number) :
-        incomplete, noise = False, False
-        if (random.random() < incomplete_circle_percent) :
+    for i in range(circle) :
+        incomplete, noised = False, False
+        if (random.random() < incomplete_c) :
             incomplete = True
-        if (random.random() < noisy_circle_percent) :
-            noise = True
-        GenerateShape("Circle", 1, occult_shape=incomplete, noisy=noise)[0].Write()
+        if (random.random() < noisy_c) :
+            noised = True
+        GenerateShape("Circle", 1, occult_shape=incomplete, noisy=noised)[0].Write()
 
-    noises = GenerateShape("Noise", noise_number)
+    noises = GenerateShape("Noise", noise)
     for item in noises :
         item.Write()
-    lines = GenerateShape("Lines", lines_number)
+    lines = GenerateShape("Lines", lines)
     for item in lines :
         item.Write()
 
@@ -157,9 +146,4 @@ def GenerateShape(shape, count, occult_shape=False, noisy=False) :
             data += noise - 128
         dataset.append(data)
     return dataset
-
-
-if __name__ == "__main__":
-    print("Generating a dataset")
-    CreateDatasetFolders()
 
